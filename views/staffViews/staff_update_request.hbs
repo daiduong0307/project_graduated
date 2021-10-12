@@ -1,0 +1,124 @@
+<div id="wrapper">
+    <!--=================================================-->
+    {{> staff/subHeader}}
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+
+            {{> staff/topBar}}
+            <!-- Container Fluid-->
+            <div class="container-fluid" id="container-wrapper">
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">UPDATE REQUEST</h1>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item active" aria-current="page">Leave Request</li>
+                        <li class="breadcrumb-item"><a href="/staff/list_all_requests">Home</a></li>
+
+                    </ol>
+                </div>
+
+                <div class="row mb-3">
+
+                    <!-- Modal Logout -->
+                    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you want to logout?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-primary"
+                                        data-dismiss="modal">Cancel</button>
+                                    <a href="/" class="btn btn-primary">Logout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!---Container Fluid-->
+
+
+                <form action="/staff/updateRequest" method="POST" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-lg-6 ">
+                            <!-- Form Basic -->
+                            <div class="card mb-4">
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Update Information Of Request</h6>
+                                </div>
+                                <div class="card-body">
+                                        <input type="hidden" name="request_id" id="" value="{{Request._id}}">
+
+                                        <div class="form-group">
+                                            <label for="exampleFormControlReadonly">Request Type</label>
+                                            <input class="form-control" type="text" id="exampleFormControlReadonly"
+                                                readonly value="{{Request.requestType_id.name}}">
+                                        </div>
+                                        <div class="form-group" id="simple-date3">
+                                            <label for="decadeView">Start Date</label>
+                                            {{!-- <div class="input-group date"> --}}
+                                                {{!-- <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i
+                                                            class="fas fa-calendar"></i></span>
+                                                </div> --}}
+                                                <input type="date" class="form-control" name="startDateOff"
+                                                    id="decadeView" value="{{Request.startDateOff}}">
+                                                {{!--
+                                            </div> --}}
+                                        </div>
+                                        <div class="form-group" id="simple-date3">
+                                            <label for="decadeView">End Date</label>
+                                            {{!-- <div class="input-group date">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i
+                                                            class="fas fa-calendar"></i></span>
+                                                </div> --}}
+                                                <input type="date" class="form-control" name="endDateOff"
+                                                    id="decadeView" value="{{ Request.endDateOff}}">
+                                                {{!--
+                                            </div> --}}
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlTextarea1">Reason</label>
+                                            <textarea class="form-control" id="exampleFormControlTextarea1"
+                                                name="reason" rows="3">{{Request.reason}}</textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <!-- Form Basic -->
+                            <div class="card mb-4">
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary"></h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <img class="card-img-top"
+                                            style="display: block;margin-left: auto;margin-right: auto;width: 500px;height: 400px;"
+                                            src="/file/{{Request.fileUpload}}" alt="image cap">
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="customFile" name="fileUpload">
+                                            <label class="custom-file-label" for="customFile">Choose file</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>

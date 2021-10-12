@@ -1,0 +1,155 @@
+<body id="page-top">
+    <div id="wrapper">
+        <!--=================================================-->
+        {{> admin/subHeader}}
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+
+                {{> admin/topBar}}
+                <!-- Container Fluid-->
+                <div class="container-fluid" id="container-wrapper">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Update Information Of Manager</h1>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/admin/home">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">List of Accounts</li>
+                            <li class="breadcrumb-item active" aria-current="page"><a
+                                    href="/admin/list_all_managers">Manager Account</a> </li>
+
+                        </ol>
+                    </div>
+
+                    <div class="row mb-3">
+
+                        <!-- Modal Logout -->
+                        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to logout?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-primary"
+                                            data-dismiss="modal">Cancel</button>
+                                        <a href="/" class="btn btn-primary">Logout</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!---Container Fluid-->
+
+
+
+
+                    <div class="row">
+                        <div class="col-lg-12 ">
+                            <!-- Form Basic -->
+                            <div class="card mb-4">
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary"></h6>
+                                </div>
+                                <div class="card-body">
+                                    <form action="/admin/updateManager" method="POST"
+                                        enctype="application/x-www-form-urlencoded">
+                                        <input type="hidden" name="manager_id" id="" value="{{Manager._id}}">
+                                        <input type="hidden" name="_method" value="PUT">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Username</label>
+                                            <input type="text" class="form-control" id="exampleInputEmail1"
+                                                aria-describedby="emailHelp" placeholder={{Manager.account_id.username}}
+                                                name="username">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword1">Password</label>
+                                            <input type="password" class="form-control" id="exampleInputPassword1"
+                                                placeholder="Hidden" name="password" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlReadonly">Role</label>
+                                            <input class="form-control" type="text" placeholder="Staff"
+                                                id="exampleFormControlReadonly" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Name</label>
+                                            <input type="text" class="form-control" id="exampleInputEmail1"
+                                                aria-describedby="emailHelp" placeholder="{{Manager.name}}" name="name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Email</label>
+                                            <input type="email" class="form-control" id="exampleInputEmail1"
+                                                aria-describedby="emailHelp" placeholder="{{Manager.email}}"
+                                                name="email">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Full Name</label>
+                                            <input type="text" class="form-control" id="exampleInputEmail1"
+                                                aria-describedby="emailHelp" placeholder="{{Manager.fullName}}"
+                                                name="fullName">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Phone Number</label>
+                                            <input type="number" class="form-control" id="exampleInputEmail1"
+                                                aria-describedby="emailHelp" placeholder="{{Manager.phoneNumber}}"
+                                                name="phoneNumber">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Age</label>
+                                            <input type="number" class="form-control" id="exampleInputEmail1"
+                                                aria-describedby="emailHelp" placeholder="{{Manager.age}}" name="age">
+                                        </div>
+                                        <div class="form-group" id="simple-date3">
+                                            <label for="decadeView">Day Of Birth</label>
+
+                                            <input type="date" class="form-control" name="dayOfBirth"
+                                                value="{{ Manager.dayOfBirth }}" id="decadeView">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1">Business Units</label>
+                                            <select class="form-control" id="exampleFormControlSelect1" name="BU_Id">
+                                                {{#each businessUnit}}
+                                                <option value="{{_id}}">{{name}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </form>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+
+</body>

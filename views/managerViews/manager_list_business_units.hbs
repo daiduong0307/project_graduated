@@ -1,0 +1,188 @@
+<body id="page-top">
+    <div id="wrapper">
+        <!--=================================================-->
+        {{> manager/subHeader}}
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+
+                {{> manager/topBar}}
+                <!-- Container Fluid-->
+                <div class="container-fluid" id="container-wrapper">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">List of Business Units</h1>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/manager/home">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><a
+                                    href="/manager/list_all_business_units"> Business Units</a> </li>
+                        </ol>
+                    </div>
+
+                    <div class="row mb-3">
+
+                        <!-- Modal Logout -->
+                        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to logout?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-primary"
+                                            data-dismiss="modal">Cancel</button>
+                                        <a href="/" class="btn btn-primary">Logout</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!---Container Fluid-->
+
+                    <!---Container Add & Search-->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <form action="/manager/search_business_unit" method="GET"
+                                        enctype="application/x-www-form-urlencoded">
+                                        <div class="form-group row">
+                                            <div class="col">
+                                                <h6>Time From</h6>
+                                                <input type="date" class="form-control " name="TimeFrom">
+                                            </div>
+                                            <div class="col">
+                                                <h6>Time To</h6>
+                                                <input type="date" class="form-control" name="TimeTo">
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <h6>Select Business Unit</h6>
+                                                <select name="BU_Id" class="form-control selectpicker"
+                                                    data-live-search="true" multiple>
+                                                    {{#each BusinessUnit}}
+                                                    <option value="{{_id}}">{{name}}</option>
+                                                    {{/each}}
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <h6> Search</h6>
+                                                <input type="text" name="search" id="form1" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col text-right">
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i>Search</i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!---Container Add & Search-->
+
+                    <!-- DataTable with Hover -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+
+                                <div class="table-responsive ">
+                                    <table class="table align-items-center table-flush table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Business Unit</th>
+                                                <th>Description</th>
+                                                <th>Create At</th>
+                                            </tr>
+                                        </thead>
+                                        <div class="row">
+                                            <tbody>
+                                                {{#each BusinessUnit}}
+                                                <tr>
+
+                                                    <td style="color: blue;">{{name}}</td>
+                                                    <td>{{description}}</td>
+                                                    {{!-- <td><span
+                                                            class="btn btn-sm btn-primary">{{amountRequests_id.name}}</span>
+                                                    </td> --}}
+                                                    <td>{{moment createdAt format = 'MMMM-DD-YYYY'}}</td>
+                                                </tr>
+                                                {{/each}}
+                                            </tbody>
+                                        </div>
+                                    </table>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5">
+                                        <div class="dataTables_info" id="dataTableHover_info" role="status"
+                                            aria-live="polite"></div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7">
+                                        <div class="dataTables_paginate paging_simple_numbers"
+                                            id="dataTableHover_paginate">
+                                            <ul class="pagination">
+                                                {{#paginate pagination type="first"}}
+                                                <li {{#if disabled}} class="paginate_button page-item previous disabled"
+                                                    id="dataTableHover_previous" {{/if}}><a href="?p={{n}}"
+                                                        aria-controls="dataTableHover" data-dt-idx="0" tabindex="0"
+                                                        class="page-link">First</a></li>
+                                                {{/paginate}}
+                                                {{#paginate pagination type="previous"}}
+                                                <li {{#if disabled}} class="paginate_button page-item previous disabled"
+                                                    id="dataTableHover_previous" {{/if}}><a href="?p={{n}}"
+                                                        aria-controls="dataTableHover" data-dt-idx="0" tabindex="0"
+                                                        class="page-link">Prev</a></li>
+                                                {{/paginate}}
+                                                {{#paginate pagination type="middle"
+                                                limit=pagination.pageCount}}
+                                                <li {{#if active}} class="paginate_button page-item active" {{/if}}><a
+                                                        href="?p={{n}}" aria-controls="dataTableHover" data-dt-idx="1"
+                                                        tabindex="0" class="page-link">{{n}}</a>
+                                                </li>
+                                                {{/paginate}}
+                                                {{#paginate pagination type="next"}}
+                                                <li {{#if disabled}} class="paginate_button page-item previous disabled"
+                                                    id="dataTableHover_previous" {{/if}}><a href="?p={{n}}"
+                                                        aria-controls="dataTableHover" data-dt-idx="0" tabindex="0"
+                                                        class="page-link">Next</a></li>
+                                                {{/paginate}}
+                                                {{#paginate pagination type="last"}}
+                                                <li {{#if disabled}} class="paginate_button page-item previous disabled"
+                                                    id="dataTableHover_previous" {{/if}}><a href="?p={{n}}"
+                                                        aria-controls="dataTableHover" data-dt-idx="0" tabindex="0"
+                                                        class="page-link">Last</a></li>
+                                                {{/paginate}}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- DataTable with Hover -->
+
+
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+</body>

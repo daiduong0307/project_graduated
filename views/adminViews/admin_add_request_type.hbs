@@ -1,0 +1,123 @@
+<body id="page-top">
+    <div id="wrapper">
+        <!--=================================================-->
+        {{> admin/subHeader}}
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+
+                {{> admin/topBar}}
+                <!-- Container Fluid-->
+                <div class="container-fluid" id="container-wrapper">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Enter Information Of New Request Type </h1>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/admin/home">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><a
+                                    href="/admin/list_all_request_types">Request Types</a> </li>
+                            <li class="breadcrumb-item active" aria-current="page"><a href="/admin/add_request_type">Add
+                                    New Request Type</a> </li>
+                        </ol>
+                    </div>
+
+                    <div class="row mb-3">
+
+                        <!-- Modal Logout -->
+                        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to logout?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-primary"
+                                            data-dismiss="modal">Cancel</button>
+                                        <a href="/" class="btn btn-primary">Logout</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!---Container Fluid-->
+
+
+
+
+                    <div class="row">
+                          <div class="col-lg-8" style="margin-left: 200px;">
+                            <!-- Form Basic -->
+                            <div class="card mb-4">
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary"></h6>
+                                </div>
+                                <div class="card-body">
+                                    <form action="/admin/addRequestType" method="POST"
+                                        enctype="application/x-www-form-urlencoded">
+                                        <div class="form-group">
+                                            {{#if err}}
+                                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                {{err}}
+                                            </div>
+                                            {{/if}}
+                                            <label for="exampleInputEmail1">Name</label>
+                                            <input type="text" class="form-control" id="exampleInputEmail1"
+                                                aria-describedby="emailHelp" placeholder="Enter Name" name="name" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword1">Description</label>
+                                            <input type="text" class="form-control" id="exampleInputPassword1"
+                                                placeholder="Enter Description" name="description" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1">List of Request Type that are already
+                                                have:</label>
+                                            <select class="form-control" id="exampleFormControlReadonly" readonly>
+                                                {{#each requestType}}
+                                                <option value="{{_id}}">{{name}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </form>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+
+</body>

@@ -1,0 +1,45 @@
+<!-- Sidebar -->
+<ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+  <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/staff/list_all_requests">
+    <div class="sidebar-brand-icon">
+      <img src="/avatar/{{Staff.avatar}}">
+    </div>
+    <div class="sidebar-brand-text mx-3">{{Staff.name}}</div>
+  </a>
+  <hr class="sidebar-divider my-0">
+  <hr class="sidebar-divider">
+  <div class="sidebar-heading">
+    Features
+  </div>
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap" aria-expanded="true"
+      aria-controls="collapseBootstrap">
+      <i class="far fa-fw fa-window-maximize"></i>
+      <span> Leave Request</span>
+    </a>
+    <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="/staff/list_all_requests"> My Requests </a>
+        <a class="collapse-item" href="/staff/add_request"> Create New Request </a>
+      </div>
+    </div>
+  </li>
+  <hr class="sidebar-divider">
+  {{!-- <div class="sidebar-heading"> --}}
+    {{!-- List of Business Units and Topics
+  </div>
+  <li class="nav-item">
+    <a class="nav-link" href="charts.html">
+      <i class="fas fa-fw fa-chart-area"></i>
+      <span>Business Units</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="charts.html">
+      <i class="fas fa-fw fa-chart-area"></i>
+      <span>Request Types</span>
+    </a>
+  </li>
+  <hr class="sidebar-divider"> --}}
+</ul>
+<!-- Sidebar -->

@@ -1,0 +1,372 @@
+<body id="page-top">
+    <div id="wrapper">
+        <!--=================================================-->
+        {{> admin/subHeader}}
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+
+                {{> admin/topBar}}
+                <!-- Container Fluid-->
+                <div class="container-fluid" id="container-wrapper">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">List of Admin Accounts</h1>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/admin/home">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">List of Accounts</li>
+                            <li class="breadcrumb-item active" aria-current="page"><a
+                                    href="/admin/list_all_admins">Admin Accounts</a> </li>
+                        </ol>
+                    </div>
+
+                    <div class="row mb-3">
+
+                        <!-- Modal Logout -->
+                        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to logout?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-primary"
+                                            data-dismiss="modal">Cancel</button>
+                                        <a href="/" class="btn btn-primary">Logout</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <!---Container Add & Search-->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <form action="/admin/search_admin" method="GET"
+                                        enctype="application/x-www-form-urlencoded">
+                                        <div class="form-group row">
+                                            <div class="col">
+                                                <h6>Time From</h6>
+                                                <input type="date" class="form-control" name="TimeFrom">
+                                            </div>
+                                            <div class="col">
+                                                <h6>Time To</h6>
+                                                <input type="date" class="form-control" name="TimeTo">
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <h6>Select Account</h6>
+                                                <select name="Admin_Id" class="form-control selectpicker"
+                                                    data-live-search="true" multiple>
+                                                    {{#each SearchAdmin}}
+                                                    <option value="{{_id}}">{{username}}</option>
+                                                    {{/each}}
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <h6> Search</h6>
+                                                <input type="text" name="search" id="form1" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col text-right">
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i>Search</i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!---Container Add & Search-->
+
+                    <!-- DataTable with Hover -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <a href="/admin/add_admin" class="btn btn-primary mb-1">ADD
+                                        ADMIN</a>
+                                </div>
+                                <div class="table-responsive ">
+                                    <table class="table align-items-center table-flush table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Username</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Create At</th>
+                                                <th>Option</th>
+                                            </tr>
+                                        </thead>
+                                        <div class="row">
+                                            <tbody>
+
+                                                {{#each ListAdmin}}
+                                                <tr>
+                                                    <td style="color: blue;">{{account_id.username}}</td>
+                                                    <td>{{name}}</td>
+                                                    <td>{{email}}</td>
+                                                    <td>{{moment createdAt format = 'MMMM-DD-YYYY'}}</td>
+                                                      <td class="d-flex flex-row">
+                                                        <a href="/admin/update_admin/{{_id}}"
+                                                            class="btn btn-outline-success mb-1"
+                                                            value="{{_id}}"  style="margin-right: 5px;">Update</a>
+                                                        <form action="/admin/deleteAdmin" method="POST"
+                                                            enctype="application/x-www-form-urlencoded">
+
+                                                            <input type="hidden" name="_id" value={{_id}}>
+                                                            <input type="hidden" name="_method" value="DELETE">
+
+                                                            <button type="submit"
+                                                                class="btn btn-outline-danger mb-1">Delete</button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                                {{/each}}
+                                            </tbody>
+                                        </div>
+                                    </table>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5">
+                                        <div class="dataTables_info" id="dataTableHover_info" role="status"
+                                            aria-live="polite"></div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7">
+                                        <div class="dataTables_paginate paging_simple_numbers"
+                                            id="dataTableHover_paginate">
+                                            <ul class="pagination">
+                                                {{#paginate pagination type="first"}}
+                                                <li {{#if disabled}} class="paginate_button page-item previous disabled"
+                                                    id="dataTableHover_previous" {{/if}}><a href="?p={{n}}"
+                                                        aria-controls="dataTableHover" data-dt-idx="0" tabindex="0"
+                                                        class="page-link">First</a></li>
+                                                {{/paginate}}
+                                                {{#paginate pagination type="previous"}}
+                                                <li {{#if disabled}} class="paginate_button page-item previous disabled"
+                                                    id="dataTableHover_previous" {{/if}}><a href="?p={{n}}"
+                                                        aria-controls="dataTableHover" data-dt-idx="0" tabindex="0"
+                                                        class="page-link">Prev</a></li>
+                                                {{/paginate}}
+                                                {{#paginate pagination type="middle"
+                                                limit=pagination.pageCount}}
+                                                <li {{#if active}} class="paginate_button page-item active" {{/if}}><a
+                                                        href="?p={{n}}" aria-controls="dataTableHover" data-dt-idx="1"
+                                                        tabindex="0" class="page-link">{{n}}</a>
+                                                </li>
+                                                {{/paginate}}
+                                                {{#paginate pagination type="next"}}
+                                                <li {{#if disabled}} class="paginate_button page-item previous disabled"
+                                                    id="dataTableHover_previous" {{/if}}><a href="?p={{n}}"
+                                                        aria-controls="dataTableHover" data-dt-idx="0" tabindex="0"
+                                                        class="page-link">Next</a></li>
+                                                {{/paginate}}
+                                                {{#paginate pagination type="last"}}
+                                                <li {{#if disabled}} class="paginate_button page-item previous disabled"
+                                                    id="dataTableHover_previous" {{/if}}><a href="?p={{n}}"
+                                                        aria-controls="dataTableHover" data-dt-idx="0" tabindex="0"
+                                                        class="page-link">Last</a></li>
+                                                {{/paginate}}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- DataTable with Hover -->
+
+
+                    {{!--
+                    <!---Container Fluid-->
+                    <div class="row">
+
+                        <!-- DataTable with Hover -->
+                        <div class="col-lg-12">
+                            <div class="card mb-4">
+
+                                <div class="table-responsive p-3">
+                                    <div id="dataTableHover_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-4 py-2">
+                                                <a href="/admin/add_manager" class="btn btn-primary mb-1">ADD
+                                                    MANAGER</a>
+                                            </div>
+                                            <div class="dropdown mb-3 col-sm-12 col-md-4">
+                                            </div>
+
+                                            <div class="col-sm-12 col-md-4">
+                                                <form action="/admin/search_manager" method="POST"
+                                                    enctype="application/x-www-form-urlencoded">
+                                                    <div class="input-group">
+                                                        <div class="form-outline">
+                                                            <input type="text" name="search" id="form1"
+                                                                class="form-control" />
+
+                                                        </div>
+                                                        <button type="submit" class="btn btn-primary">
+                                                            <i class="fas fa-search"></i>
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 mb-4">
+                                                <table
+                                                    class="table align-items-center table-flush table-hover dataTable"
+                                                    id="dataTableHover" role="grid"
+                                                    aria-describedby="dataTableHover_info">
+                                                    <thead class="thead-light">
+                                                        <tr role="row">
+
+                                                            <th class="sorting" tabindex="0"
+                                                                aria-controls="dataTableHover" rowspan="1" colspan="1"
+                                                                aria-label="Position: activate to sort column ascending"
+                                                                style="width: 90.6125px;">Username</th>
+                                                            <th class="sorting" tabindex="0"
+                                                                aria-controls="dataTableHover" rowspan="1" colspan="1"
+                                                                aria-label="Office: activate to sort column ascending"
+                                                                style="width: 66.95px;">Password</th>
+                                                            <th class="sorting" tabindex="0"
+                                                                aria-controls="dataTableHover" rowspan="1" colspan="1"
+                                                                aria-label="Age: activate to sort column ascending"
+                                                                style="width: 29.8125px;">User ID</th>
+                                                            <th class="sorting" tabindex="0"
+                                                                aria-controls="dataTableHover" rowspan="1" colspan="1"
+                                                                aria-label="Start date: activate to sort column ascending"
+                                                                style="width: 75.475px;">Name</th>
+                                                            <th class="sorting" tabindex="0"
+                                                                aria-controls="dataTableHover" rowspan="1" colspan="1"
+                                                                aria-label="Salary: activate to sort column ascending"
+                                                                style="width: 69.9375px;">Email</th>
+                                                            <th class="sorting" tabindex="0"
+                                                                aria-controls="dataTableHover" rowspan="1" colspan="1"
+                                                                aria-label="Salary: activate to sort column ascending"
+                                                                style="width: 69.9375px;">Business Unit</th>
+                                                            <th class="sorting" tabindex="0"
+                                                                aria-controls="dataTableHover" rowspan="1" colspan="1"
+                                                                aria-label="Salary: activate to sort column ascending"
+                                                                style="width: 69.9375px;">Option</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tfoot>
+                                                        <tr>
+
+                                                            <th rowspan="1" colspan="1">Username</th>
+                                                            <th rowspan="1" colspan="1">Password</th>
+                                                            <th rowspan="1" colspan="1">User ID</th>
+                                                            <th rowspan="1" colspan="1">Name</th>
+                                                            <th rowspan="1" colspan="1">Email</th>
+                                                            <th rowspan="1" colspan="1">Business Unit</th>
+                                                            <th rowspan="1" colspan="1">Option</th>
+                                                        </tr>
+                                                    </tfoot>
+
+                                                    <tbody>
+                                                        {{#each Manager}}
+
+
+                                                        <tr role="row" class="even">
+
+                                                            <td>{{account_id.username}}</td>
+                                                            <td>hidden</td>
+                                                            <td>{{_id}}</td>
+                                                            <td>{{name}}</td>
+                                                            <td>{{email}}</td>
+                                                            <td><span
+                                                                    class="btn btn-sm btn-primary">{{businessUnit_id.name}}</span>
+                                                            </td>
+                                                            <td><a href="/admin/update_manager/{{_id}}"
+                                                                    class="btn btn-outline-success mb-1"
+                                                                    value="{{_id}}">Update</a>
+                                                                <form action="/admin/deleteManager" method="POST"
+                                                                    enctype="application/x-www-form-urlencoded">
+
+                                                                    <input type="hidden" name="_id" value={{_id}}>
+                                                                    <input type="hidden" name="_method" value="DELETE">
+                                                                    <button type="submit"
+                                                                        class="btn btn-outline-danger mb-1">Delete</button>
+                                                                </form>
+
+                                                            </td>
+                                                        </tr>
+                                                        {{/each}}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-5">
+                                                <div class="dataTables_info" id="dataTableHover_info" role="status"
+                                                    aria-live="polite">Showing 1 to 10 of 57 entries</div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-7">
+                                                <div class="dataTables_paginate paging_simple_numbers"
+                                                    id="dataTableHover_paginate">
+                                                    <ul class="pagination">
+                                                        <li class="paginate_button page-item previous disabled"
+                                                            id="dataTableHover_previous"><a href="#"
+                                                                aria-controls="dataTableHover" data-dt-idx="0"
+                                                                tabindex="0" class="page-link">Previous</a></li>
+                                                        <li class="paginate_button page-item active"><a href="#"
+                                                                aria-controls="dataTableHover" data-dt-idx="1"
+                                                                tabindex="0" class="page-link">1</a></li>
+                                                        <li class="paginate_button page-item "><a href="#"
+                                                                aria-controls="dataTableHover" data-dt-idx="2"
+                                                                tabindex="0" class="page-link">2</a></li>
+                                                        <li class="paginate_button page-item "><a href="#"
+                                                                aria-controls="dataTableHover" data-dt-idx="3"
+                                                                tabindex="0" class="page-link">3</a></li>
+                                                        <li class="paginate_button page-item "><a href="#"
+                                                                aria-controls="dataTableHover" data-dt-idx="4"
+                                                                tabindex="0" class="page-link">4</a></li>
+                                                        <li class="paginate_button page-item "><a href="#"
+                                                                aria-controls="dataTableHover" data-dt-idx="5"
+                                                                tabindex="0" class="page-link">5</a></li>
+                                                        <li class="paginate_button page-item "><a href="#"
+                                                                aria-controls="dataTableHover" data-dt-idx="6"
+                                                                tabindex="0" class="page-link">6</a></li>
+                                                        <li class="paginate_button page-item next"
+                                                            id="dataTableHover_next"><a href="#"
+                                                                aria-controls="dataTableHover" data-dt-idx="7"
+                                                                tabindex="0" class="page-link">Next</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> --}}
+
+
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+</body>
