@@ -102,7 +102,7 @@ exports.resetPassManager = async (req, res) => {
           token: crypto.randomBytes(32).toString("hex"),
         }).save();
       }
-      const link = `${{URL}}/reset_pass/${user._id}/${token.token}`;
+      const link = URL +`/reset_pass/${user._id}/${token.token}`;
       await resetPass(manager.email, "Password reset", link)
         .then((result) => {
           console.log("Email sent...", result);
@@ -155,7 +155,7 @@ exports.resetPassStaff = async (req, res) => {
           token: crypto.randomBytes(32).toString("hex"),
         }).save();
       }
-      const link = `${{URL}}/reset_pass/${user._id}/${token.token}`;
+      const link = URL +`/reset_pass/${user._id}/${token.token}`;
       await resetPass(staff.email, "Password reset", link)
         .then((result) => {
           console.log("Email sent...", result);
@@ -173,11 +173,11 @@ exports.resetPassStaff = async (req, res) => {
 }
 
 exports.reset_pass = async (req, res) => {
-  const { userId, token, sucessfully } = req.params
+  const { userId, token, msg } = req.params
   res.render('reset_pass', {
     User: userId,
     Token: token,
-    sucessfully: sucessfully,
+    err: msg,
     layout: "loginLayout.hbs"
   })
 }
@@ -185,19 +185,25 @@ exports.reset_pass = async (req, res) => {
 exports.resetPassUserId = async (req, res) => {
   try {
     const sucessfully = 'password reset sucessfully'
+    const invalid = 'Invalid link or expired'
+    const err = 'the password length must be  > 4'
     const user = await RoleUser.findById(req.params.userId);
-    if (!user) {
-      return res.status(400).send("invalid link or expired")
-    }
     const token = await Token.findOne({
       userId: user._id,
       token: req.params.token,
     })
+
+    if (!user) {
+      return res.redirect( URL + `/reset_pass/${user._id}/${token.token}?msg=${invalid}`)
+    }
     if (!token) {
-      return res.status(400).send("Invalid link or expired")
+      return res.redirect( URL + `/reset_pass/${user._id}/${token.token}?msg=${invalid}`)
     }
 
     user.password = req.body.password;
+    if( user.password = "") {
+      return res.redirect( URL + `/reset_pass/${user._id}/${token.token}?msg=${err}`)
+    }
     await user.save();
     await token.delete();
     return res.redirect(`/?sucessfully=${sucessfully}`)

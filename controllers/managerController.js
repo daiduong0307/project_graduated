@@ -326,10 +326,12 @@ exports.get_all_information = async (req, res) => {
 //GET
 exports.update_information = async (req, res) => {
     const _id = req.params.id
+    const { msg } = req.query
     const managerAcc = await Manager.findOne({ _id: _id }).populate("businessUnit_id").populate("account_id")
     try {
         res.render("managerViews/manager_update_information", {
-            Manager: managerAcc
+            Manager: managerAcc,
+            err: msg
         })
     } catch (e) {
         res.status(400).send(e)
@@ -347,6 +349,13 @@ exports.updateInformation = async (req, res) => {
         age,
         dayOfBirth
     } = req.body;
+
+    const emailExist = await Manager.findOne({ email: email })
+
+    if (emailExist) {
+        const emailExist = "Email has already exist !!!";
+        return res.redirect(`/manager/update_information?msg=${emailExist}`);
+    }
 
     const newValueRole = {}
     if (password) newValueRole.password = password

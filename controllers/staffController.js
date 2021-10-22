@@ -141,16 +141,15 @@ exports.addRequest = async (req, res) => {
             fileUpload: req.file.filename,
             businessUnit_id: checkStaff.businessUnit_id
         })
-
         const saveRequest = await newRequest.save()
         await checkStaff.request_id.push(saveRequest)
         await checkStaff.save()
-
         //push into BU
         const businessUnit = await BusinessUnit.findOne({ _id: saveRequest.businessUnit_id })
         await businessUnit.request_id.push(saveRequest)
         await businessUnit.save()
 
+        res.redirect(`/staff/list_all_requests`)
         //!Send Email
         const manager = await Manager.findOne({ businessUnit_id: saveRequest.businessUnit_id })
         await sendMail(manager.email, checkStaff.name)
@@ -160,8 +159,6 @@ exports.addRequest = async (req, res) => {
             .catch((err) => {
                 console.log(err.message);
             });
-
-        res.redirect(`/staff/list_all_requests`)
     } catch (e) {
         res.status(400).send(e)
     }
@@ -299,10 +296,12 @@ exports.get_all_information = async (req, res) => {
 //GET
 exports.update_information = async (req, res) => {
     const _id = req.params.id
+    const { msg } = req.query
     const staffAcc = await Staff.findOne({ _id: _id }).populate("businessUnit_id").populate("account_id")
     try {
         res.render("staffViews/staff_update_information", {
-            Staff: staffAcc
+            Staff: staffAcc,
+            err: msg
         })
     } catch (e) {
         res.status(400).send(e)
@@ -320,6 +319,13 @@ exports.updateInformation = async (req, res) => {
         age,
         dayOfBirth
     } = req.body;
+
+    const emailExist = await Staff.findOne({ email: email })
+
+    if (emailExist) {
+        const emailExist = "Email has already exist !!!";
+        return res.redirect(`/staff/update_information/${staff_id}?msg=${emailExist}`);
+    }
 
     const newValueRole = {}
     if (password) newValueRole.password = password
@@ -491,6 +497,6 @@ cron.schedule('30 13 27 * *', async () => {
 //             console.log(allRequests)
 //         })
 //     }
-   
+
 // }
 

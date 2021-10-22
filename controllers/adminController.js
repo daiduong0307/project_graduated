@@ -332,9 +332,14 @@ exports.addAdmin = async (req, res, next) => {
         = req.body;
 
     const existUser = await RoleUser.findOne({ username: username, role: "admin" })
+    const emailExist = await Admin.findOne({ email: email })
     if (existUser) {
         const errExistUsername = "Username has already exist !!!";
         return res.redirect(`/admin/add_admin?msg=${errExistUsername}`);
+    }
+    if (emailExist) {
+        const emailExist = "Email has already exist !!!";
+        return res.redirect(`/admin/add_staff?msg=${emailExist}`);
     }
     try {
         const newUser = await new RoleUser({
@@ -366,10 +371,12 @@ exports.addAdmin = async (req, res, next) => {
 //GET
 exports.update_admin = async (req, res) => {
     const _id = req.params.id
+    const msg = req.params.msg
     const adminAcc = await Admin.findOne({ _id: _id }).populate("account_id")
     try {
         res.render("adminViews/admin_update_admin", {
-            Admin: adminAcc
+            Admin: adminAcc,
+            err: msg
         })
     } catch (e) {
         res.status(400).send(e)
@@ -387,6 +394,17 @@ exports.updateAdmin = async (req, res) => {
         age,
         dayOfBirth
     } = req.body;
+
+    const existUser = await RoleUser.findOne({ username: username, role: "admin" })
+    const emailExist = await Admin.findOne({ email: email })
+    if (existUser) {
+        const errExistUsername = "Username has already exist !!!";
+        return res.redirect(`/admin/update_admin/${admin_id}?msg=${errExistUsername}`);
+    }
+    if (emailExist) {
+        const emailExist = "Email has already exist !!!";
+        return res.redirect(`/admin/update_admin/${admin_id}?msg=${emailExist}`);
+    }
 
     const newValueRole = {}
     if (username) newValueRole.username = username
@@ -457,10 +475,12 @@ exports.get_all_information = async (req, res) => {
 //GET
 exports.update_information = async (req, res) => {
     const _id = req.params.id
+    const { msg } = req.query
     const adminAcc = await Admin.findOne({ _id: _id }).populate("account_id")
     try {
         res.render("adminViews/admin_update_information", {
-            Admin: adminAcc
+            Admin: adminAcc,
+            err: msg
         })
     } catch (e) {
         res.status(400).send(e)
@@ -478,6 +498,13 @@ exports.updateInformation = async (req, res) => {
         age,
         dayOfBirth
     } = req.body;
+
+    const emailExist = await Admin.findOne({ email: email })
+
+    if (emailExist) {
+        const emailExist = "Email has already exist !!!";
+        return res.redirect(`/admin/update_information?msg=${emailExist}`);
+    }
 
     const newValueRole = {}
     if (password) newValueRole.password = password
@@ -629,6 +656,7 @@ exports.addStaff = async (req, res, next) => {
 //GET
 exports.update_staff = async (req, res) => {
     const _id = req.params.id
+    const msg = req.query.msg
     const staffAcc = await Staff.findOne({ _id: _id }).populate("businessUnit_id").populate("account_id")
     const getAdmin = await Admin.findOne({ account_id: req.session.userId }).populate("account_id")
     const businessUnit = await BusinessUnit.find({})
@@ -636,7 +664,8 @@ exports.update_staff = async (req, res) => {
         res.render("adminViews/admin_update_staff", {
             Staff: staffAcc,
             businessUnit: businessUnit,
-            Admin: getAdmin
+            Admin: getAdmin,
+            err: msg
         })
     } catch (e) {
         res.status(400).send(e)
@@ -654,6 +683,17 @@ exports.updateStaff = async (req, res) => {
         age,
         dayOfBirth,
         BU_Id } = req.body;
+
+        const existUser = await RoleUser.findOne({ username: username, role: "admin" })
+        const emailExist = await Staff.findOne({ email: email })
+        if (existUser) {
+            const errExistUsername = "Username has already exist !!!";
+            return res.redirect(`/admin/update_staff/${staff_id}?msg=${errExistUsername}`);
+        }
+        if (emailExist) {
+            const emailExist = "Email has already exist !!!";
+            return res.redirect(`/admin/update_staff/${staff_id}?msg=${emailExist}`);
+        }
 
     const newValueRole = {}
     if (username) newValueRole.username = username
@@ -1065,6 +1105,7 @@ exports.addManager = async (req, res, next) => {
 //GET
 exports.update_manager = async (req, res) => {
     const _id = req.params.id
+    const msg = req.query.msg
     const managerAcc = await Manager.findOne({ _id: _id }).populate("businessUnit_id").populate("account_id")
     const getAdmin = await Admin.findOne({ account_id: req.session.userId }).populate("account_id")
     const businessUnit = await BusinessUnit.find({})
@@ -1072,7 +1113,8 @@ exports.update_manager = async (req, res) => {
         res.render("adminViews/admin_update_manager", {
             Manager: managerAcc,
             businessUnit: businessUnit,
-            Admin: getAdmin
+            Admin: getAdmin,
+            err: msg
         })
     } catch (e) {
         res.status(400).send(e)
@@ -1090,6 +1132,17 @@ exports.updateManager = async (req, res) => {
         age,
         dayOfBirth,
         BU_Id } = req.body;
+
+        const existUser = await RoleUser.findOne({ username: username, role: "admin" })
+        const emailExist = await Manager.findOne({ email: email })
+        if (existUser) {
+            const errExistUsername = "Username has already exist !!!";
+            return res.redirect(`/admin/update_manager/${manager_id}?msg=${errExistUsername}`);
+        }
+        if (emailExist) {
+            const emailExist = "Email has already exist !!!";
+            return res.redirect(`/admin/update_manager/${manager_id}?msg=${emailExist}`);
+        }
 
     const newValueRole = {}
     if (username) newValueRole.username = username
@@ -1227,12 +1280,14 @@ exports.addBusinessUnit = async (req, res) => {
 //GET
 exports.update_business_unit = async (req, res) => {
     const _id = req.params.id
+    const msg = req.query.msg
     const businessUnit = await BusinessUnit.findOne({ _id: _id }).populate("amountRequests_id").populate("staff_id")
     const getAdmin = await Admin.findOne({ account_id: req.session.userId }).populate("account_id")
     try {
         res.render("adminViews/admin_update_business_unit", {
             businessUnit: businessUnit,
-            Admin: getAdmin
+            Admin: getAdmin,
+            err: msg
         })
     } catch (e) {
         res.status(400).send(e)
@@ -1246,6 +1301,12 @@ exports.updateBusinessUnit = async (req, res) => {
         name,
         description
     } = req.body
+
+    const existBusinessUnit = await BusinessUnit.findOne({ name: name })
+    if (existBusinessUnit) {
+        const errExistBU = "Business Unit has already exist !!!";
+        return res.redirect(`/admin/update_business_unit/${businessUnit_id}?msg=${errExistBU}`);
+    }
 
     const newValue = {}
     if (name) newValue.name = name
@@ -1356,12 +1417,14 @@ exports.addRequestType = async (req, res) => {
 //GET
 exports.update_request_type = async (req, res) => {
     const _id = req.params.id
+    const msg = req.query.msg
     const requestType = await RequestType.findOne({ _id: _id })
     const getAdmin = await Admin.findOne({ account_id: req.session.userId }).populate("account_id")
     try {
         res.render("adminViews/admin_update_request_type", {
             requestType: requestType,
-            Admin: getAdmin
+            Admin: getAdmin,
+            err: msg
         })
     } catch (e) {
         res.status(400).send(e)
@@ -1375,6 +1438,12 @@ exports.updateRequestType = async (req, res) => {
         name,
         description
     } = req.body
+
+    const existRequestType = await RequestType.findOne({ name: req.body.name })
+    if (existRequestType) {
+        const existRequestType = "Request Type has already exist !!!";
+        return res.redirect(`/admin/update_request_type/${requestType_id}?msg=${existRequestType}`);
+    }
 
     const newValue = {}
     if (name) newValue.name = name
@@ -1451,7 +1520,6 @@ exports.download = async (req, res) => {
                 worksheet.autoFilter = 'A1:F1';
 
                 worksheet.eachRow(function (row, rowNumber) {
-
                     row.eachCell((cell, colNumber) => {
                         if (rowNumber == 1) {
                             // First set the background of header row
