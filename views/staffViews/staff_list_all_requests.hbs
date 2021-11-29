@@ -40,7 +40,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-outline-primary"
                                             data-dismiss="modal">Cancel</button>
-                                        <a href="/" class="btn btn-primary">Logout</a>
+                                        <a href="/logout" class="btn btn-primary">Logout</a>
                                     </div>
                                 </div>
                             </div>
@@ -127,6 +127,7 @@
                                                 <th>Create At</th>
                                                 <th>Option</th>
                                                 <th>View</th>
+                                                <th>Comment</th>
                                             </tr>
                                         </thead>
                                         <div class="row">
@@ -162,6 +163,22 @@
                                                             class="btn btn-outline-info mb-1" value="{{_id}}">View
                                                         </a>
                                                     </td>
+                                                      <td>
+                                                    <button class="btn btn-primary" type="button" data-toggle="collapse"
+                                                        data-target="#collapseExample{{_id}}" aria-expanded="false"
+                                                        aria-controls="collapseExample">
+                                                        View 
+                                                    </button>
+                                                    <div class="collapse" id="collapseExample{{_id}}">
+                                                     
+                                                        <div class="card card-body">
+                                                          {{#each comments}}
+                                                           <p>{{comment}}</p> 
+                                                             {{/each}}
+                                                        </div>
+                                                      
+                                                    </div>
+                                                </td>
                                                 </tr>
                                                 {{/each}}
                                             </tbody>

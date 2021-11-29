@@ -10,16 +10,16 @@
             <div class="mb-4">
               <h3>Enter New Pass</h3>
               <p class="mb-4" style="color :blueviolet;"> Leave management system.</p>
-              {{#if err}}
+              {{#if notify}}
               <div class="alert alert-danger" role="alert" style="width: auto;">
-                {{err}}
+                {{notify.error}}
               </div>
               {{/if}}
             </div>
             <form action="/resetPassword/{{User}}/{{Token}}" method="POST">
               <div class="form-group last mb-4">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password">
+                <input type="password" class="form-control" id="password" name="password" required>
               </div>
               <input type="submit" value="Submit" class="btn btn-block btn-primary">
               </a>

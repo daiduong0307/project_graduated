@@ -34,7 +34,13 @@ const RequestSchema = new mongoose.Schema({
     owner_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Staff",
-    }
+    },
+    comments: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Comment",
+        },
+      ],
 }, {
     timestamps: true
 });

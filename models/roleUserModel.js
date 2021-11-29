@@ -12,7 +12,6 @@ const roleUserSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    minlength: 4,
     maxlength: 255,
     required: true,
     minlength: 7,

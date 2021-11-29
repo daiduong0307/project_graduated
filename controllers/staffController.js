@@ -76,6 +76,7 @@ exports.list_all_requests = async (req, res) => {
     const request = await Request.find({ owner_id: staff._id })
         .populate('requestType_id')
         .populate('businessUnit_id')
+        .populate('comments')
         .skip((perPage * page) - perPage)
         .limit(perPage)
         .sort({ createdAt: -1 })
@@ -270,8 +271,6 @@ exports.deleteRequest = async (req, res) => {
         res.redirect(`/staff/list_all_requests`)
 
     }
-
-
 }
 
 //! Staff information

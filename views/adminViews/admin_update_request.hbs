@@ -9,7 +9,9 @@
                 <!-- Container Fluid-->
                 <div class="container-fluid" id="container-wrapper">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">List All Request of {{Staff.name}}</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Update Request Of
+                            <span style="text-transform: uppercase; color:red">{{Staff.name}}</span>
+                        </h1>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/admin/home">Home</a></li>
                             <li class="breadcrumb-item active" aria-current="page">List of Accounts</li>
@@ -40,7 +42,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-outline-primary"
                                             data-dismiss="modal">Cancel</button>
-                                        <a href="/" class="btn btn-primary">Logout</a>
+                                        <a href="/logout" class="btn btn-primary">Logout</a>
                                     </div>
                                 </div>
                             </div>

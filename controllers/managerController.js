@@ -3,6 +3,7 @@ const RoleUser = require('../models/roleUserModel')
 const RequestType = require('../models/requestTypeModel')
 const Request = require('../models/requestModel')
 const BusinessUnit = require('../models/businessUnitModel')
+const Comment = require('../models/commentModel')
 const Staff = require('../models/staffModel')
 const Excel = require('exceljs')
 const cron = require('node-cron')
@@ -168,9 +169,11 @@ exports.list_all_requests = async (req, res) => {
                 .populate('owner_id')
                 .populate('requestType_id')
                 .populate('businessUnit_id')
+                .populate('comments')
                 .skip((perPage * page) - perPage)
                 .limit(perPage)
                 .sort({createdAt: -1})
+                console.log(request)
             const count = await Request.find({ businessUnit_id: checkManager.businessUnit_id }).countDocuments()
                 .populate('owner_id')
                 .populate('requestType_id')
@@ -212,17 +215,30 @@ exports.approved_request = async (req, res) => {
 }
 //* Denied Requests
 exports.denied_request = async (req, res) => {
-    const { _id } = req.body
+    const { _id, commentValue } = req.body
     const newValue = 'Denied'
 
     try {
+        const checkManager = await Manager.findOne({ account_id: req.session.userId })
         const request = await Request.findOne({ _id: _id })
         const requestUpdate = await Request.findOneAndUpdate(
             { _id: request._id },
             { $set: { status: newValue } },
             { new: true, useFindAndModify: false }
         )
-        res.redirect(`/manager/list_all_requests`)
+
+        const comment = {
+            manager_id: checkManager,
+            comment: commentValue,
+            request_id: _id,
+        }
+
+        const newComment = await Comment.create(comment)
+        const saveComment  = await newComment.save()
+         await request.comments.push(saveComment)
+         await request.save()
+
+        return res.redirect(`/manager/list_all_requests`)
     } catch (e) {
         res.status(400).send(e)
     }

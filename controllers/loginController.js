@@ -173,20 +173,24 @@ exports.resetPassStaff = async (req, res) => {
 }
 
 exports.reset_pass = async (req, res) => {
-  const { userId, token, msg } = req.params
+  const { userId, token } = req.params
+  const {invalid,sucessfully, error } = req.query
   res.render('reset_pass', {
     User: userId,
     Token: token,
-    err: msg,
+    notify:{
+      error,
+      invalid,
+      sucessfully,
+    },
     layout: "loginLayout.hbs"
   })
 }
 
 exports.resetPassUserId = async (req, res) => {
   try {
+    const password = req.body.password
     const sucessfully = 'password reset sucessfully'
-    const invalid = 'Invalid link or expired'
-    const err = 'the password length must be  > 4'
     const user = await RoleUser.findById(req.params.userId);
     const token = await Token.findOne({
       userId: user._id,
@@ -194,16 +198,24 @@ exports.resetPassUserId = async (req, res) => {
     })
 
     if (!user) {
-      return res.redirect( URL + `/reset_pass/${user._id}/${token.token}?msg=${invalid}`)
+      const invalid = 'Invalid link or expired'
+      return res.redirect(`/reset_pass/${user._id}/${token.token}?invalid=${invalid}`)
     }
     if (!token) {
-      return res.redirect( URL + `/reset_pass/${user._id}/${token.token}?msg=${invalid}`)
+      const invalid = 'Invalid link or expired'
+      return res.redirect(`/reset_pass/${user._id}/${token.token}?invalid=${invalid}`)
     }
-
-    user.password = req.body.password;
-    if( user.password = "") {
-      return res.redirect( URL + `/reset_pass/${user._id}/${token.token}?msg=${err}`)
+    //!check validate
+    if(password) {
+      if(password.length < 7 || password.includes("password")) {
+        const err = 'the password length must be  > 7'
+        return res.redirect(`/reset_pass/${user._id}/${token.token}?error=${err}`)
+      }
     }
+    user.password = password;
+    // if( user.password = "") {
+    //   return res.redirect( URL + `/reset_pass/${user._id}/${token.token}?msg=${err}`)
+    // }
     await user.save();
     await token.delete();
     return res.redirect(`/?sucessfully=${sucessfully}`)
