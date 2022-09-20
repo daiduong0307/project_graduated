@@ -37,7 +37,7 @@ var app = express();
 // using Session to verify User Login.
 app.use(
   session({
-    secret: process.env.SESSION_KEY,
+    secret: "process.env.SESSION_KEY",
     resave: true,
     saveUninitialized: false,
   })
